@@ -14,11 +14,11 @@ class App extends Component {
   }
 
   componentDidMount() {
-    Promise.resolve(loadWebcamVideo()).then(cameraLoadedFlag => {
-      if(!cameraLoadedFlag) {
-        //camera failed to load
-      }
-  });
+    // Promise.resolve(loadWebcamVideo()).then(cameraLoadedFlag => {
+    //   if(!cameraLoadedFlag) {
+    //     //camera failed to load
+    //   }
+    // });
   }
 
   render() {
@@ -30,6 +30,19 @@ class App extends Component {
           <img src={bicepsImage} className="biceps-image reverted-biceps-image" />
         </div>
         {/* <video id="video" className="video-demo" autoplay></video> */}
+        <div dangerouslySetInnerHTML={{
+            __html: `
+              <video
+                loop
+                muted
+                autoplay
+                playsinline
+              >
+                <source src={pizzaVideo} type="video/mp4"/>
+              </video
+            `
+          }}
+        />
         <video autoPlay loop muted className="playing-video">
           <source src={pizzaVideo} type="video/mp4"/>
           Why isn't the video playing?
