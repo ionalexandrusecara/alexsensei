@@ -1,0 +1,39 @@
+
+.app-wrapper {
+    margin: auto;
+    text-align: center;
+
+    .alex-trademark-wrapper {
+        margin: auto;
+        text-align: center;
+        margin-top: 1em;
+
+        .biceps-image {
+            width: 100px;
+        }
+
+        .smiley-image {
+            width: 100px;
+        }
+
+        .reverted-biceps-image {
+            transform: scaleX(-1);
+        }
+    }
+
+    .video-demo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 300px;
+        margin-top: 1em;
+    }
+
+    .playing-video {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 300px;
+        margin-top: 1em;
+    }
+}

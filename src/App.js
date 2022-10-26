@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import bicepsImage from './resources/biceps.png';
+import smileyImage from './resources/smiley.png';
+import pizzaVideo from './resources/pizza.mp4';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.scss';
+import { loadWebcamVideo } from './services/cameraService';
+
+const VIDEO_URL = "pizzaVideo";
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    Promise.resolve(loadWebcamVideo()).then(cameraLoadedFlag => {
+      if(!cameraLoadedFlag) {
+        //camera failed to load
+      }
+  });
+  }
+
+  render() {
+    return (
+      <div className="app-wrapper">
+        <div className="alex-trademark-wrapper">
+          <img src={bicepsImage} className="biceps-image" />
+          <img src={smileyImage} className="smiley-image" />
+          <img src={bicepsImage} className="biceps-image reverted-biceps-image" />
+        </div>
+        <video id="video" className="video-demo" autoplay></video>
+        <video autoPlay className="playing-video">
+          <source src={pizzaVideo} type="video/mp4"/>
+          Why isn't the video playing?
+        </video>
+      </div>
+    );
+  }
 }
 
 export default App;
