@@ -30,7 +30,7 @@ class App extends Component {
           <img src={bicepsImage} className="biceps-image reverted-biceps-image" />
         </div>
         {/* <video id="video" className="video-demo" autoplay></video> */}
-        {/* <div dangerouslySetInnerHTML={{
+        <div dangerouslySetInnerHTML={{
             __html: `
               <video
                 autoPlay
@@ -39,11 +39,11 @@ class App extends Component {
                 className="playing-video"
                 preload="auto"
                 playsinline
-                src={pizzaVideo}
+                src=${pizzaVideo}
               />
             `
           }}
-        /> */}
+        />
         {/* <video src="https://app.kemtai.com/media/exercises/11526b5e-b661-41f7-a0ca-509ef80d3f7f/480p.webm#t=0" class="playing-video" autoplay preload="auto" playsinline loop style="opacity: 1;"></video> */}
         <video autoPlay loop muted className="playing-video" preload="auto" playsinline src={pizzaVideo}/>
       </div>
