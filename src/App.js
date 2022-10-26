@@ -30,7 +30,7 @@ class App extends Component {
           <img src={bicepsImage} className="biceps-image reverted-biceps-image" />
         </div>
         {/* <video id="video" className="video-demo" autoplay></video> */}
-        <video controls autoPlay className="playing-video">
+        <video autoPlay loop muted className="playing-video">
           <source src={pizzaVideo} type="video/mp4"/>
           Why isn't the video playing?
         </video>
