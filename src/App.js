@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import bicepsImage from './resources/biceps.png';
 import smileyImage from './resources/smiley.png';
-import pizzaVideo from './resources/pizza.mp4';
+import pizzaVideo from './resources/pizza.webm';
 
 import './App.scss';
 import { loadWebcamVideo } from './services/cameraService';
@@ -33,13 +33,14 @@ class App extends Component {
         {/* <div dangerouslySetInnerHTML={{
             __html: `
               <video
+                autoPlay
                 loop
                 muted
-                autoplay
+                className="playing-video"
+                preload="auto"
                 playsinline
-              >
-                <source src="./resources/pizza.mp4" type="video/mp4"/>
-              </video
+                src={pizzaVideo}
+              />
             `
           }}
         /> */}
