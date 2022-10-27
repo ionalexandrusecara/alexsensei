@@ -1,40 +1,179 @@
-import React, { Component } from 'react';
+import React, {useEffect, useRef} from 'react';
 import bicepsImage from './resources/biceps.png';
 import smileyImage from './resources/smiley.png';
 import pizzaVideo from './resources/pizza.webm';
 import pizzaVideo2 from './resources/pizza3.mp4';
+import * as mdPose from "@mediapipe/pose"
+import {Pose} from "@mediapipe/pose"
+import * as cam from "@mediapipe/camera_utils";
+import {drawConnectors, drawLandmarks} from '@mediapipe/drawing_utils';
 import Webcam from "react-webcam";
-
 import './App.scss';
-import { loadWebcamVideo } from './services/cameraService';
 
 const VIDEO_URL = "pizzaVideo";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-  }
+function App() {
+    const webcamRef = useRef(null);
+    const canvasRef = useRef(null);
+    var camera = null;
 
-  componentDidMount() {
-    // Promise.resolve(loadWebcamVideo()).then(cameraLoadedFlag => {
-    //   if(!cameraLoadedFlag) {
-    //     //camera failed to load
-    //   }
-    // });
-  }
+    function onResults(results) {
+        // const video = webcamRef.current.video;
+        const videoWidth = webcamRef.current.video.videoWidth;
+        const videoHeight = webcamRef.current.video.videoHeight;
 
-  render() {
+        if (videoWidth && videoHeight) {
+            canvasRef.current.width = videoWidth;
+            canvasRef.current.height = videoHeight;
+
+            const canvasElement = canvasRef.current;
+            const canvasCtx = canvasElement.getContext('2d');
+
+            if (canvasCtx) {
+                canvasCtx.save();
+                canvasCtx.clearRect(
+                    0,
+                    0,
+                    canvasElement.width,
+                    canvasElement.height,
+                );
+
+                canvasCtx.drawImage(
+                    results.image,
+                    0,
+                    0,
+                    canvasElement.width,
+                    canvasElement.height,
+                );
+
+                if (results.poseLandmarks) {
+                    const landmarks = results.poseLandmarks;
+                    const lineColor = 'white';
+
+                    drawConnectors(
+                        canvasCtx,
+                        results.poseLandmarks,
+                        mdPose.POSE_CONNECTIONS,
+                        {visibilityMin: 0.65, color: lineColor},
+                    );
+
+                    drawLandmarks(
+                        canvasCtx,
+                        Object.values(mdPose.POSE_LANDMARKS_LEFT).map(
+                            index => results.poseLandmarks[index],
+                        ),
+                        {
+                            visibilityMin: 0.65,
+                            color: lineColor,
+                            fillColor: '#33eecc',
+                        },
+                    );
+
+                    drawLandmarks(
+                        canvasCtx,
+                        Object.values(mdPose.POSE_LANDMARKS_RIGHT).map(
+                            index => results.poseLandmarks[index],
+                        ),
+                        {
+                            visibilityMin: 0.65,
+                            color: lineColor,
+                            fillColor: '#062622',
+                        },
+                    );
+
+                    drawLandmarks(
+                        canvasCtx,
+                        Object.values(mdPose.POSE_LANDMARKS_NEUTRAL).map(
+                            index => results.poseLandmarks[index],
+                        ),
+                        {visibilityMin: 0.65, color: lineColor, fillColor: 'white'},
+                    );
+                }
+                canvasCtx.restore();
+            }
+        }
+    }
+
+    // }
+
+    // setInterval(())
+    useEffect(() => {
+
+        const pose = new Pose({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+            },
+        });
+
+
+        pose.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+        pose.onResults(onResults);
+
+        if (
+            typeof webcamRef.current !== "undefined" &&
+            webcamRef.current !== null
+        ) {
+            camera = new cam.Camera(webcamRef.current.video, {
+                onFrame: async () => {
+                    await pose.send({image: webcamRef.current.video});
+                },
+                width: 640,
+                height: 480,
+            });
+            camera.start();
+        }
+    }, []);
+
     return (
-      <div className="app-wrapper">
-        <div className="alex-trademark-wrapper">
-          <img src={bicepsImage} className="biceps-image" />
-          <img src={smileyImage} className="smiley-image" />
-          <img src={bicepsImage} className="biceps-image reverted-biceps-image" />
-        </div>
-        <Webcam width={300} height={300}/>
-        {/* <video id="video" className="video-demo" autoplay></video> */}
-        <div dangerouslySetInnerHTML={{
-            __html: `
+        <div className="app-wrapper">
+            <div className="alex-trademark-wrapper">
+                <img src={bicepsImage} className="biceps-image"/>
+                <img src={smileyImage} className="smiley-image"/>
+                <img src={bicepsImage} className="biceps-image reverted-biceps-image"/>
+            </div>
+            <div class={'grid'}>
+                <Webcam
+                    ref={webcamRef}
+                    style={{
+                        position: 'absolute',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 150,
+                        textAlign: 'center',
+                        objectFit: 'cover',
+                        zIndex: 5,
+                        width: '300',
+                        height: '300',
+                    }}
+                />
+                <canvas
+                    ref={canvasRef}
+                    className="output_canvas"
+                    style={{
+                        position: 'absolute',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        top: 150,
+                        textAlign: 'center',
+                        objectFit: 'cover',
+                        zIndex: 5,
+                        width: '300',
+                        height: '300',
+                    }}
+                ></canvas>
+                <div dangerouslySetInnerHTML={{
+                    __html: `
               <video
                 autoPlay
                 loop
@@ -42,22 +181,15 @@ class App extends Component {
                 className="playing-video"
                 preload="auto"
                 playsinline
-                width="300"
-                height="300"
                 src=${pizzaVideo2}
+                width="600"
               />
             `
-          }}
-        />
-        {/* <video src="https://app.kemtai.com/media/exercises/11526b5e-b661-41f7-a0ca-509ef80d3f7f/480p.webm#t=0" class="playing-video" autoplay preload="auto" playsinline loop style="opacity: 1;"></video> */}
-        {/* <video controls autoPlay loop muted preload="auto" playsinline className="playing-video" src="https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4"/> */}
-        {/* <video className="playing-video" src={pizzaVideo}/> */}
-        {/* <p className="hello-text">
-          Really 16?
-        </p> */}
-      </div>
+                }}
+                />
+            </div>
+        </div>
     );
-  }
 }
 
 export default App;

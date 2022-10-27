@@ -1785,6 +1785,21 @@
   "resolved" "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   "version" "2.0.4"
 
+"@mediapipe/camera_utils@^0.3.1640029074":
+  "integrity" "sha512-jRV/Mp2lgqNYT68TeVRu/Xq+ptZO9F9vCjxzQsA3VM2r7oXg0TrnfO9De2KKOUTpt0p28dKHs625J8GdWjha8A=="
+  "resolved" "https://registry.npmjs.org/@mediapipe/camera_utils/-/camera_utils-0.3.1640029074.tgz"
+  "version" "0.3.1640029074"
+
+"@mediapipe/drawing_utils@^0.3.1620248257":
+  "integrity" "sha512-s598oo1K6C62mX3rWXJ7n1RJFdXjyQn3f6CeI+lU6kD69MVyBcV3hdmO5LnEZlCw5NRDANtaM8WAOuqZHaldLg=="
+  "resolved" "https://registry.npmjs.org/@mediapipe/drawing_utils/-/drawing_utils-0.3.1620248257.tgz"
+  "version" "0.3.1620248257"
+
+"@mediapipe/pose@^0.5.1635988162":
+  "integrity" "sha512-t0dpl+iG/MTPtPPxEYHyVWo+X7G+qgYUYaB4y9pxavQRNzuQQeHeSmUnT+A8qOKnuB0ccxgyrrFmGUaaL0F3wQ=="
+  "resolved" "https://registry.npmjs.org/@mediapipe/pose/-/pose-0.5.1635988162.tgz"
+  "version" "0.5.1635988162"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   "integrity" "sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg=="
   "resolved" "https://registry.npmjs.org/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz"
