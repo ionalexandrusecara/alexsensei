@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import bicepsImage from './resources/biceps.png';
 import smileyImage from './resources/smiley.png';
 import pizzaVideo from './resources/pizza.webm';
@@ -8,6 +8,7 @@ import {Pose} from "@mediapipe/pose"
 import * as cam from "@mediapipe/camera_utils";
 import {drawConnectors, drawLandmarks} from '@mediapipe/drawing_utils';
 import Webcam from "react-webcam";
+import ReactPlayer from 'react-player'
 import './App.scss';
 
 const VIDEO_URL = "pizzaVideo";
@@ -15,7 +16,12 @@ const VIDEO_URL = "pizzaVideo";
 function App() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const [videoFilePath, setVideoFilePath] = useState(null);
     var camera = null;
+
+    const handleVideoUpload = (event) => {
+        setVideoFilePath('https://d1eo2cyh7srqsg.cloudfront.net/demo/demo_mvp_workout.mp4');
+    };
 
     function onResults(results) {
         // const video = webcamRef.current.video;
@@ -129,6 +135,11 @@ function App() {
         }
     }, []);
 
+    useEffect(() => {
+        handleVideoUpload();
+        console.log('videoFilePath', videoFilePath);
+    })
+
     return (
         <div className="app-wrapper">
             <div className="alex-trademark-wrapper">
@@ -136,11 +147,11 @@ function App() {
                 <img src={smileyImage} className="smiley-image"/>
                 <img src={bicepsImage} className="biceps-image reverted-biceps-image"/>
             </div>
-            <div class={'grid'}>
+            <div className={'grid grid gap-4 grid-cols-1 md:grid-cols-2 w-[90%] md:w-auto bg-black flex-[1_1_auto]'}>
+                <div className={'relative rounded-2xl overflow-hidden'}>
                 <Webcam
                     ref={webcamRef}
                     style={{
-                        position: 'absolute',
                         marginLeft: 'auto',
                         marginRight: 'auto',
                         left: 0,
@@ -151,7 +162,7 @@ function App() {
                         objectFit: 'cover',
                         zIndex: 5,
                         width: '300',
-                        height: '300',
+                        height: '150',
                     }}
                 />
                 <canvas
@@ -172,21 +183,15 @@ function App() {
                         height: '300',
                     }}
                 ></canvas>
-                <div dangerouslySetInnerHTML={{
-                    __html: `
-              <video
-                autoPlay
-                loop
-                muted
-                className="playing-video"
-                preload="auto"
-                playsinline
-                src=${pizzaVideo2}
-                width="600"
-              />
-            `
-                }}
-                />
+                </div>
+                <div className='player-wrapper'>
+                    <ReactPlayer
+                        playing
+                        className="react-player rounded-2xl"
+                        url='https://d1eo2cyh7srqsg.cloudfront.net/challenge/videos/HIPS+%26+GLUTES.mov'
+                        controls
+                    />
+                </div>
             </div>
         </div>
     );
