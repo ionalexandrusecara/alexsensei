@@ -190,6 +190,7 @@ function App() {
                         className="react-player rounded-2xl"
                         url='https://d1eo2cyh7srqsg.cloudfront.net/challenge/videos/HIPS+%26+GLUTES.mov'
                         controls
+                        playsinline
                     />
                 </div>
             </div>
