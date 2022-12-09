@@ -10,6 +10,8 @@ import {drawConnectors, drawLandmarks} from '@mediapipe/drawing_utils';
 import Webcam from "react-webcam";
 import ReactPlayer from 'react-player'
 import './App.scss';
+import useSound from 'use-sound';
+import repSound from './resources/boop.wav';
 
 const VIDEO_URL = "pizzaVideo";
 
@@ -17,10 +19,32 @@ function App() {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
     const [videoFilePath, setVideoFilePath] = useState(null);
+    const synth = window.speechSynthesis;
     var camera = null;
+    const [playRepCount] = useSound(
+        repSound,
+        {
+            volume: 45,
+            playbackRate: 0.5,
+            soundEnabled: true
+        }
+    );
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            playRepCount();
+        }, 4000);
+    });
 
     const handleVideoUpload = (event) => {
         setVideoFilePath('https://d1eo2cyh7srqsg.cloudfront.net/demo/demo_mvp_workout.mp4');
+    };
+
+    const handleSpeakButton = (e) => {
+        const voice = synth.getVoices()[33]; // en women voice
+        const voiceAdvice = new SpeechSynthesisUtterance("Hello there! Let's do our best!");
+        voiceAdvice.voice = voice;
+        synth.speak(voiceAdvice);
     };
 
     function onResults(results) {
@@ -147,6 +171,7 @@ function App() {
                 <img src={smileyImage} className="smiley-image"/>
                 <img src={bicepsImage} className="biceps-image reverted-biceps-image"/>
             </div>
+            <button onClick={handleSpeakButton}>Speak to me!</button>
             <div className={'grid grid gap-4 grid-cols-1 md:grid-cols-2 w-[90%] md:w-auto bg-black flex-[1_1_auto]'}>
                 <div className={'relative rounded-2xl overflow-hidden'}>
                 <Webcam
