@@ -41,7 +41,8 @@ function App() {
     };
 
     const handleSpeakButton = (e) => {
-        const voice = synth.getVoices()[33]; // en women voice
+        const voices = synth.getVoices()
+        const voice = voices.find(a => a.name == 'Samantha') // en women voice
         const voiceAdvice = new SpeechSynthesisUtterance("Hello there! Let's do our best!");
         voiceAdvice.voice = voice;
         synth.speak(voiceAdvice);
