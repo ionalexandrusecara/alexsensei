@@ -11,7 +11,7 @@ import Webcam from "react-webcam";
 import ReactPlayer from 'react-player'
 import './App.scss';
 import useSound from 'use-sound';
-import repSound from './resources/boop.wav';
+import repSound from './resources/beep_3.wav';
 
 const VIDEO_URL = "pizzaVideo";
 
@@ -24,8 +24,8 @@ function App() {
     const [playRepCount] = useSound(
         repSound,
         {
-            volume: 45,
-            playbackRate: 0.5,
+            volume: 0.75,
+            playbackRate: 0.7,
             soundEnabled: true
         }
     );
